@@ -711,7 +711,7 @@
         <div class="exp-meta">
           <div class="exp-period">Oct 2023 → Present</div>
           <div class="exp-company">Polyhedra Network</div>
-          <div class="exp-duration exp-status-active">● Active · 1 yr 7 mos</div>
+          <div class="exp-duration exp-status-active" data-start="2023-10">● Active · <span class="calc-duration"></span></div>
         </div>
         <div class="exp-body">
           <div class="exp-role">Senior Ambassador</div>
@@ -728,7 +728,7 @@
         <div class="exp-meta">
           <div class="exp-period">Aug 2025 → Present</div>
           <div class="exp-company">Glider</div>
-          <div class="exp-duration exp-status-active">● Active · 9 mos</div>
+          <div class="exp-duration exp-status-active" data-start="2025-08">● Active · <span class="calc-duration"></span></div>
         </div>
         <div class="exp-body">
           <div class="exp-role">Regional Lead</div>
@@ -744,7 +744,7 @@
         <div class="exp-meta">
           <div class="exp-period">Oct 2024 → Present</div>
           <div class="exp-company">Sending Labs</div>
-          <div class="exp-duration exp-status-active">● Active · 7 mos</div>
+          <div class="exp-duration exp-status-active" data-start="2024-10">● Active · <span class="calc-duration"></span></div>
         </div>
         <div class="exp-body">
           <div class="exp-role">Community Ambassador</div>
@@ -1146,6 +1146,24 @@ revealEls.forEach(el => {
   el.style.transform = 'translateY(20px)';
   observer.observe(el);
 });
+
+// ── DYNAMIC DURATION CALCULATOR ──
+(function() {
+  function calcDuration(startYYYYMM) {
+    const now = new Date();
+    const [startYear, startMonth] = startYYYYMM.split('-').map(Number);
+    let years = now.getFullYear() - startYear;
+    let months = now.getMonth() + 1 - startMonth; // getMonth() is 0-indexed
+    if (months < 0) { years--; months += 12; }
+    if (years > 0 && months > 0) return `${years} yr${years > 1 ? 's' : ''} ${months} mo${months > 1 ? 's' : ''}`;
+    if (years > 0) return `${years} yr${years > 1 ? 's' : ''}`;
+    return `${months} mo${months > 1 ? 's' : ''}`;
+  }
+  document.querySelectorAll('[data-start]').forEach(el => {
+    const span = el.querySelector('.calc-duration');
+    if (span) span.textContent = calcDuration(el.dataset.start);
+  });
+})();
 
 // ── NAV SCROLL SHADOW ──
 window.addEventListener('scroll', () => {
